@@ -3,7 +3,6 @@ import JWT
 
 let host = "https://api.appstoreconnect.apple.com"
 
-
 public final class ASCApiManager {
     
     public static let `default` = ASCApiManager()
