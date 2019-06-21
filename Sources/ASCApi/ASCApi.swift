@@ -1,8 +1,6 @@
 import Foundation
 import JWT
 
-let host = "https://api.appstoreconnect.apple.com"
-
 public final class ASCApiManager {
     
     public static let `default` = ASCApiManager()
@@ -21,7 +19,7 @@ public final class ASCApi {
     
     struct ASAPIPayload: JWTPayload {
         let iss: String
-        let exp = ExpirationClaim(value: Date(timeInterval: 20 * 60, since: Date()))
+        var exp = ExpirationClaim(value: Date(timeInterval: 20 * 60, since: Date()))
         let aud: String? = "appstoreconnect-v1"
         
         func verify(using signer: JWTSigner) throws {
@@ -32,6 +30,8 @@ public final class ASCApi {
     private let key: Data
     private let header: JWTHeader
     private var payload: ASAPIPayload
+    
+    private var token: String?
         
     init(iss: String, kid: String, keyPath: String) throws {
         self.key = try Data(contentsOf: URL(fileURLWithPath: keyPath))
@@ -39,8 +39,16 @@ public final class ASCApi {
         self.payload = ASAPIPayload(iss: iss)
     }
     
-    public func token() throws -> String {
-        return try generateToken()
+    public func getToken() throws -> String {
+        guard let t = self.token else {
+            return try generateToken()
+        }
+        do {
+            try self.payload.exp.verifyNotExpired()
+            return t
+        } catch {
+            return try generateToken()
+        }
     }
     
     /// Generate token
@@ -51,11 +59,13 @@ public final class ASCApi {
         } else {
             fatalError("Not Support")
         }
+        self.payload.exp = ExpirationClaim(value: Date(timeInterval: 20 * 60, since: Date()))
         let jwt = JWT(header: header, payload: payload)
         let signed = try jwt.sign(using: signer)
         guard let t = String(bytes: signed, encoding: .utf8) else {
             throw TokenError.tokenWasNotGeneratedCorrectly
         }
+        self.token = t
         return t
     }
 }

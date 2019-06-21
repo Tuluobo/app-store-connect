@@ -9,13 +9,15 @@ let package = Package(
         .library(name: "ASCApi", targets: ["ASCApi"]),
     ],
     dependencies: [
+	// 💧 A server-side Swift web framework.
+        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
         // 🔏 JSON Web Token signing and verification (HMAC, RSA).
         .package(url: "https://github.com/vapor/jwt.git", from: "3.0.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-        .target(name: "ASCApi", dependencies: ["JWT"]),
+        .target(name: "ASCApi", dependencies: ["Vapor", "JWT"]),
         .testTarget(name: "ASCApiTests", dependencies: ["ASCApi"]),
     ]
 )
