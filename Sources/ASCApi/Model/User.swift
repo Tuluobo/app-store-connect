@@ -34,23 +34,33 @@ public struct User: Model {
     }
     
     struct Relationship: Model {
-        
-        /// Included resource types and IDs.
-        struct VisibleApp: Model {
-            let links: Link
-            let data: [ResourceModel]?
-            let meta: PagingInformation?
-        }
-        
-        let visibleApps: VisibleApp
+        let visibleApps: ResourceListRelationship
     }
     
     let id: String
     let type: ResourceType
     let attributes: Attribute
-    let relationships: Relationship
+    let relationships: Relationship?
     let links: Link
 }
+
+public struct UserInvitation: Model {
+    
+    struct Attribute: Model {
+        let email: String
+        let firstName: String
+        let lastName: String
+        let allAppsVisible: Bool = true
+        let provisioningAllowed: Bool = false
+        let roles: [User.UserRole]
+    }
+    
+    let type = "userInvitations"
+    let attributes: Attribute
+    let relationships: User.Relationship
+}
+
+// MARK: - User List Response
 
 public struct UserListResponse: Model {
     let data: [User]

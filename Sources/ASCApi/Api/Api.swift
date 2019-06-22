@@ -44,11 +44,21 @@ extension Request {
 }
 
 extension Response {
+    
+    func handlerEmpty() throws -> Future<Void> {
+        if self.http.status.code >= 200 && self.http.status.code < 300 {
+            return self.future(())
+        } else {
+            return try self.content.decode(ErrorResponse.self).map { (e) in
+                throw ASError.response(e)
+            }
+        }
+    }
+    
     func handler<T>() throws -> Future<T> where T: Model {
         if self.http.status.code >= 200 && self.http.status.code < 300 {
             return try self.content.decode(T.self)
         } else {
-            self.http.contentType = .json
             return try self.content.decode(ErrorResponse.self).map { (e) in
                 throw ASError.response(e)
             }

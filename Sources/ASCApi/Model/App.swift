@@ -22,13 +22,13 @@ public struct App: Model {
             let links: Link
         }
         
-        let betaAppLocalizations: BetaAppLocalization
-        let betaAppReviewDetail: BetaAppLocalization
-        let betaGroups: BetaAppLocalization
-        let betaLicenseAgreement: BetaAppLocalization
-        let betaTesters: BetaAppLocalization
-        let builds: BetaAppLocalization
-        let preReleaseVersions: BetaAppLocalization
+        let betaAppLocalizations: ResourceListRelationship
+        let betaAppReviewDetail: ResourceRelationship
+        let betaGroups: ResourceListRelationship
+        let betaLicenseAgreement: ResourceRelationship
+        let betaTesters: ResourceListRelationship
+        let builds: ResourceListRelationship
+        let preReleaseVersions: ResourceListRelationship
     }
     
     let id: String
@@ -41,9 +41,9 @@ public struct App: Model {
 // MARK: - APP List Response
 
 public struct AppListResponse: Model {
-    let data: [App]
-    let links: Link
-    let meta: PagingInformation
+    public let data: [App]
+    public let links: Link
+    public let meta: PagingInformation
 }
 
 // MARK: - APP Info Response

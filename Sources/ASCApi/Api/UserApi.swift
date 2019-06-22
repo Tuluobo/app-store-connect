@@ -16,7 +16,7 @@ public final class UserApi: Api {
     /// /users
     /// - Parameter container: HTTP Container
     public func getUserList(on container: Container) throws -> Future<UserListResponse> {
-        return try container.client().get(self.basePath + "//users", beforeSend: { try $0.addToken() }).flatMap({ (response) in
+        return try container.client().get(self.basePath + "/users", beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
     }
@@ -38,10 +38,22 @@ public final class UserApi: Api {
     public func updateUser(user: User, on container: Container) throws -> Future<UserInfoResponse> {
         return try container.client().patch(self.basePath + "/users/\(user.id)") { (request) in
             try request.addToken()
-            let update = UpdateRequest(data: user)
+            let update = RequestContent(data: user)
             try request.content.encode(update)
         }.flatMap { (response) in
             return try response.handler()
+        }
+    }
+    
+    /// Delete User
+    /// /users/{id}
+    /// - Parameter id: User id
+    /// - Parameter container: HTTP Container
+    public func deleteUser(id: String, on container: Container) throws -> Future<Void> {
+        return try container.client().delete(self.basePath + "/users/\(id)") { (request) in
+            try request.addToken()
+        }.flatMap { (response) in
+            return try response.handlerEmpty()
         }
     }
     

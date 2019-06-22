@@ -13,6 +13,10 @@ public typealias Model = Content
 enum ResourceType: String, Model {
     case apps = "apps"
     case users = "users"
+    case userInvitations = "userInvitations"
+    case bundleIds = "bundleIds"
+    case profiles = "profiles"
+    case bundleIdCapabilities = "bundleIdCapabilities"
 }
 
 struct ResourceModel: Model {
@@ -20,9 +24,23 @@ struct ResourceModel: Model {
     let type: ResourceType
 }
 
+struct ResourceRelationship: Model {
+    let links: Link
+    let data: ResourceModel?
+    let meta: PagingInformation?
+}
+
+/// Included resource types and IDs.
+struct ResourceListRelationship: Model {
+    let links: Link
+    let data: [ResourceModel]?
+    let meta: PagingInformation?
+}
+
 public struct Link: Model {
     let `self`: String
     let related: String?
+    let next : String?
 }
 
 public struct PagingInformation: Model {
@@ -34,8 +52,8 @@ public struct Paging: Model {
     let limit: Int
 }
 
-// MARK: - Update Request
-public struct UpdateRequest<T>: Model where T: Model {
+// MARK: - Request Content
+public struct RequestContent<T>: Model where T: Model {
     let data: T
 }
 
