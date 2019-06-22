@@ -6,5 +6,3 @@
 //
 
 import Foundation
-
-let baseURL = "https://api.appstoreconnect.apple.com"

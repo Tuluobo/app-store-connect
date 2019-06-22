@@ -9,19 +9,16 @@ import Foundation
 import HTTP
 import Vapor
 
-public final class AppApi {
+public final class AppApi: Api {
+    
+    public init() { }
     
     /// Get App List
     /// /v1/apps
     /// - Parameter container: HTTP Container
-    public static func getAppList(on container: Container) throws -> Future<AppListResponse> {
-        guard let token = try ASCApiManager.default.api?.getToken() else {
-            throw ASError.token
-        }
-        var headers = HTTPHeaders()
-        headers.bearerAuthorization = BearerAuthorization(token: token)
-        return try container.client().get(baseURL + "/v1/apps", headers: headers).flatMap({ (response) -> Future<AppListResponse> in
-            return try response.content.decode(AppListResponse.self)
+    public func getAppList(on container: Container) throws -> Future<AppListResponse> {
+        return try container.client().get(self.basePath + "/apps", beforeSend: { try $0.addToken() }).flatMap({ (response) -> Future<AppListResponse> in
+            return try response.handler()
         })
     }
     
@@ -29,15 +26,9 @@ public final class AppApi {
     /// /v1/apps/{id}
     /// - Parameter id: App id
     /// - Parameter container: HTTP Container
-    public static func getAppInfo(id: String, on container: Container) throws -> Future<AppInfoResponse> {
-        guard let token = try ASCApiManager.default.api?.getToken() else {
-            throw ASError.token
-        }
-        var headers = HTTPHeaders()
-        headers.bearerAuthorization = BearerAuthorization(token: token)
-        return try container.client().get(baseURL + "/v1/apps/\(id)", headers: headers).flatMap({ (response) -> Future<AppInfoResponse> in
-            return try response.content.decode(AppInfoResponse.self)
+    public func getAppInfo(id: String, on container: Container) throws -> Future<AppInfoResponse> {
+        return try container.client().get(self.basePath + "/apps/\(id)", beforeSend: { try $0.addToken() }).flatMap({ (response) -> Future<AppInfoResponse> in
+            return try response.handler()
         })
     }
-    
 }

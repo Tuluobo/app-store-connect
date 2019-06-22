@@ -1,14 +1,13 @@
 //
-//  AppModel.swift
+//  App.swift
 //  ASCApi
 //
 //  Created by Hao Wang on 2019/6/21.
 //
 
 import Foundation
-import Vapor
 
-public struct AppModel: Model {
+public struct App: Model {
     
     struct Attribute: Model {
         let bundleId : String
@@ -33,22 +32,22 @@ public struct AppModel: Model {
     }
     
     let id: String
-    let type: String
-    let attributes: Attribute
+    let type: ResourceType
+    let attributes: Attribute?
     let relationships: Relationship?
-    let links: Link
+    let links: Link?
 }
 
-// MARK: - APP List
+// MARK: - APP List Response
 
 public struct AppListResponse: Model {
-    let data: [AppModel]
+    let data: [App]
     let links: Link
-    let meta: ListMeta
+    let meta: PagingInformation
 }
 
-// MARK: - APP Info
+// MARK: - APP Info Response
 public struct AppInfoResponse: Model {
-    let data: AppModel
+    let data: App
     let links: Link
 }
