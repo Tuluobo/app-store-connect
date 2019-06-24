@@ -6,3 +6,43 @@
 //
 
 import Foundation
+
+public struct Device: Model {
+
+    struct Attribute: Model {
+        let udid: String
+        let name: String
+        let platform: BundleIdPlatform
+        let deviceClass: deviceType?
+        let model: String?
+        let status: EnableStatus?
+        let addedDate: String?
+    }
+
+    let id: String
+    let type: ResourceType
+    let attributes: Attribute
+    let links: Link
+}
+
+// MARK: - Request Device
+
+public struct CreateDevice: Model {
+    let type: ResourceType = .devices
+    let attributes: Device.Attribute
+}
+
+// MARK: - Device List Response
+
+public struct DeviceListResponse: Model {
+    let data: [Device]
+    let links: Link
+    let meta: PagingInformation?
+}
+
+// MARK: - Device Response
+
+public struct DeviceResponse: Model {
+    let data: Device
+    let links: Link
+}

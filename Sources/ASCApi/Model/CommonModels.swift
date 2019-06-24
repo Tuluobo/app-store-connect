@@ -10,6 +10,13 @@ import Vapor
 
 public typealias Model = Content
 
+// MARK: - Enum
+
+enum EnableStatus: String, Model {
+    case enabled = "ENABLED"
+    case disabled = "DISABLED"
+}
+
 enum ResourceType: String, Model {
     case apps = "apps"
     case users = "users"
@@ -17,7 +24,24 @@ enum ResourceType: String, Model {
     case bundleIds = "bundleIds"
     case profiles = "profiles"
     case bundleIdCapabilities = "bundleIdCapabilities"
+    case devices = "devices"
 }
+
+enum BundleIdPlatform: String, Model {
+    case iOS = "IOS"
+    case macOS = "MAC_OS"
+}
+
+enum deviceType: String, Model {
+    case watch = "APPLE_WATCH"
+    case iPad = "IPAD"
+    case iPhone = "IPHONE"
+    case iPod = "IPOD"
+    case tv = "APPLE_TV"
+    case mac = "MAC"
+}
+
+// MARK: - Common Model
 
 struct ResourceModel: Model {
     let id: String
@@ -53,11 +77,13 @@ public struct Paging: Model {
 }
 
 // MARK: - Request Content
+
 public struct RequestContent<T>: Model where T: Model {
     let data: T
 }
 
 // MARK: - Error Response
+
 public struct ErrorResponse: Model {
     let errors: [ErrorInfo]
 }
@@ -75,4 +101,3 @@ public struct ErrorInfo: Model {
     let id: String?
     let source: Source?
 }
-

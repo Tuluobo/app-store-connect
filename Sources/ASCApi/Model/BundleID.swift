@@ -10,11 +10,6 @@ import Foundation
 public struct BundleID: Model {
     struct Attribute: Model {
         
-        enum BundleIdPlatform: String, Model {
-            case iOS = "IOS"
-            case macOS = "MAC_OS"
-        }
-        
         let identifier: String
         let name: String
         let platform: BundleIdPlatform
