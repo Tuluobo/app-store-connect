@@ -38,7 +38,7 @@ public final class BundleIDApi: Api {
     }
     
     public func delete(id: String, on container: Container) throws -> Future<Void> {
-        return try container.client().get(self.basePath + "/bundleIds/\(id)") {
+        return try container.client().delete(self.basePath + "/bundleIds/\(id)") {
             try $0.addToken()
         }.flatMap { (response) in
             return try response.handlerEmpty()
