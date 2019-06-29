@@ -34,18 +34,3 @@ public struct Certificate: Model {
     let attributes: Attribute
     let links: Link
 }
-
-// MARK: - Certificate List Response
-
-public struct CertificateListResponse: Model {
-    let data: [Certificate]
-    let links: Link
-    let meta: PagingInformation
-}
-
-// MARK: - Certificate Response
-
-public struct CertificateResponse: Model {
-    let data: Certificate
-    let links: Link
-}

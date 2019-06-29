@@ -32,25 +32,3 @@ public struct CreateBundleID: Model {
     let type: ResourceType = .bundleIds
     let attributes: BundleID.Attribute
 }
-
-// MARK: - BundleID List Response
-
-public struct BundleIDListResponse: Model {
-    let data: [BundleID]
-    let links: Link
-    let meta: PagingInformation
-    // ??
-    // let included: []
-}
-
-// MARK: - BundleID Response
-
-public struct BundleIDResponse: Model {
-    let data: BundleID
-    let links: Link
-    // The requested relationship data.
-    // Possible types: Profile, BundleIdCapability
-    // ??
-    // let included: [*]
-    
-}

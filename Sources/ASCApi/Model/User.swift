@@ -59,20 +59,3 @@ public struct UserInvitation: Model {
     let attributes: Attribute
     let relationships: User.Relationship
 }
-
-// MARK: - User List Response
-
-public struct UserListResponse: Model {
-    let data: [User]
-    let links: Link
-    let meta: PagingInformation
-    let included: [App]?
-}
-
-// MARK: - User Info Response
-
-public struct UserInfoResponse: Model {
-    let data: User
-    let links: Link
-    let included: [App]?
-}

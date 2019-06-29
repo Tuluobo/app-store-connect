@@ -31,18 +31,3 @@ public struct CreateDevice: Model {
     let type: ResourceType = .devices
     let attributes: Device.Attribute
 }
-
-// MARK: - Device List Response
-
-public struct DeviceListResponse: Model {
-    let data: [Device]
-    let links: Link
-    let meta: PagingInformation?
-}
-
-// MARK: - Device Response
-
-public struct DeviceResponse: Model {
-    let data: Device
-    let links: Link
-}

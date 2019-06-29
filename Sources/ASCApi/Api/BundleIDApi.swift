@@ -14,9 +14,11 @@ public final class BundleIDApi: Api {
     /// Find and list bundle IDs that are registered to your team.
     /// GET /bundleIds
     /// - Parameter container: HTTP Container
-    public func getBundleIDList(on container: Container) throws -> Future<BundleIDListResponse> {
-        return try container.client().get(self.basePath + "/bundleIds") { try $0.addToken() }.flatMap { (response) in
-            return try response.handler()
+    public func getBundleIDList(on container: Container) throws -> Future<ListResponse<BundleID>> {
+        return try container.client().get(self.basePath + "/bundleIds") {
+            try $0.addToken()
+        }.flatMap {
+            return try $0.handler()
         }
     }
     
@@ -24,7 +26,7 @@ public final class BundleIDApi: Api {
     /// POST /bundleIds
     /// - Parameter bundleID: Create BundleID Object
     /// - Parameter container: HTTP Container
-    public func create(bundleID: CreateBundleID, on container: Container) throws -> Future<BundleIDResponse> {
+    public func create(bundleID: CreateBundleID, on container: Container) throws -> Future<InfoResponse<BundleID>> {
         return try container.client().post(self.basePath + "/bundleIds") {
             try $0.addToken()
             let content = RequestContent(data: bundleID)
@@ -38,13 +40,13 @@ public final class BundleIDApi: Api {
     /// PATCH /bundleIds/{id}
     /// - Parameter bundleID: BundleID Object
     /// - Parameter container: HTTP Container
-    public func update(bundleID: BundleID, on container: Container) throws -> Future<BundleIDResponse> {
+    public func update(bundleID: BundleID, on container: Container) throws -> Future<InfoResponse<BundleID>> {
         return try container.client().patch(self.basePath + "/bundleIds/\(bundleID.id)") {
             try $0.addToken()
             let content = RequestContent(data: bundleID)
             try $0.content.encode(content)
-            }.flatMap { (response) in
-                return try response.handler()
+        }.flatMap { (response) in
+            return try response.handler()
         }
     }
     

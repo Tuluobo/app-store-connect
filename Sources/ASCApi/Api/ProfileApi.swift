@@ -14,7 +14,7 @@ public final class ProfileApi: Api {
     /// Find and list provisioning profiles and download their data.
     /// GET /profiles
     /// - Parameter container: HTTP Container
-    public func getProfileList(on container: Container) throws -> Future<ProfileListResponse> {
+    public func getProfileList(on container: Container) throws -> Future<ListResponse<Profile>> {
         return try container.client().get(self.basePath + "/profiles", beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
@@ -24,7 +24,7 @@ public final class ProfileApi: Api {
     /// GET /profiles/{id}
     /// - Parameter id: Profile ID
     /// - Parameter container: HTTP Container
-    public func getProfileInfo(id: String, on container: Container) throws -> Future<ProfileResponse> {
+    public func getProfileInfo(id: String, on container: Container) throws -> Future<InfoResponse<Profile>> {
         return try container.client().get(self.basePath + "/profiles/\(id)", beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
@@ -34,8 +34,8 @@ public final class ProfileApi: Api {
     /// GET /profiles/{id}/bundleId
     /// - Parameter id: Profile ID
     /// - Parameter container: HTTP Container
-    public func getBundleIdInProfile(id: String, on container: Container) throws -> Future<BundleIDResponse> {
-        return try container.client().get(self.basePath + "/profiles/\(id)/bundleId", beforeSend: { try $0.addToken() }).flatMap({ (response) in
+    public func getBundleIdInProfile(id: String, on container: Container) throws -> Future<InfoResponse<BundleID>> {
+        return try container.client().get(self.basePath + "/profiles/\(id)/bundleId") { try $0.addToken() }.flatMap({ (response) in
             return try response.handler()
         })
     }
@@ -45,9 +45,11 @@ public final class ProfileApi: Api {
     /// - Parameter id: Profile ID
     /// - Parameter container: HTTP Container
     public func deleteProfile(id: String, on container: Container) throws -> Future<Void> {
-        return try container.client().delete(self.basePath + "/profiles/\(id)", beforeSend: { try $0.addToken() }).flatMap({ (response) in
+        return try container.client().delete(self.basePath + "/profiles/\(id)") {
+            try $0.addToken()
+        }.flatMap { (response) in
             return try response.handlerEmpty()
-        })
+        }
     }
     
 }

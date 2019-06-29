@@ -15,7 +15,7 @@ public final class DeviceApi: Api {
     /// POST /devices
     /// - Parameter device: Register Device
     /// - Parameter container: HTTP Container
-    public func register(device: CreateDevice, on container: Container) throws -> Future<DeviceResponse> {
+    public func register(device: CreateDevice, on container: Container) throws -> Future<InfoResponse<Device>> {
         return try container.client().post(self.basePath + "/devices") {
             try $0.addToken()
             try $0.content.encode(RequestContent(data: device))
@@ -27,7 +27,7 @@ public final class DeviceApi: Api {
     /// Find and list devices registered to your team.
     /// GET /devices
     /// - Parameter container: HTTP Container
-    public func getDeviceList(on container: Container) throws -> Future<DeviceListResponse> {
+    public func getDeviceList(on container: Container) throws -> Future<ListResponse<Device>> {
         return try container.client().get(self.basePath + "/devices") {
             try $0.addToken()
         }.flatMap {
@@ -39,7 +39,7 @@ public final class DeviceApi: Api {
     /// GET /devices/{id}
     /// - Parameter id: Device Id
     /// - Parameter container: HTTP Container
-    public func getDeviceInfo(id: String, on container: Container) throws -> Future<DeviceResponse> {
+    public func getDeviceInfo(id: String, on container: Container) throws -> Future<InfoResponse<Device>> {
         return try container.client().get(self.basePath + "/devices/\(id)") {
             try $0.addToken()
         }.flatMap {
@@ -51,7 +51,7 @@ public final class DeviceApi: Api {
     /// PATCH /devices/{id}
     /// - Parameter device: Update Device
     /// - Parameter container: HTTP Container
-    public func updateDevice(device: Device, on container: Container) throws -> Future<DeviceResponse> {
+    public func updateDevice(device: Device, on container: Container) throws -> Future<InfoResponse<Device>> {
         return try container.client().patch(self.basePath + "/devices/\(device.id)") {
             try $0.addToken()
             try $0.content.encode(RequestContent(data: device))

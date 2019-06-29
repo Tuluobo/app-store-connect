@@ -14,7 +14,7 @@ public final class UserInvitationApi: Api {
     /// Get a list of pending invitations to join your team.
     /// /userInvitations
     /// - Parameter container: HTTP Container
-    public func getInvitedList(on container: Container) throws -> Future<UserListResponse> {
+    public func getInvitedList(on container: Container) throws -> Future<ListResponse<User>> {
         return try container.client().get(self.basePath + "/userInvitations", beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
@@ -24,7 +24,7 @@ public final class UserInvitationApi: Api {
     /// /userInvitations/{id}
     /// - Parameter id: User id
     /// - Parameter container: HTTP Container
-    public func getInvitedUser(id: String, on container: Container) throws -> Future<UserInfoResponse> {
+    public func getInvitedUser(id: String, on container: Container) throws -> Future<InfoResponse<User>> {
         return try container.client().get(self.basePath + "/userInvitations/\(id)", beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
@@ -33,7 +33,7 @@ public final class UserInvitationApi: Api {
     /// Invite a user with assigned user roles to join your team.
     /// - Parameter user: UserInvitation Object
     /// - Parameter container: HTTP Container
-    public func inviteUser(user: UserInvitation, on container: Container) throws -> Future<UserInfoResponse> {
+    public func inviteUser(user: UserInvitation, on container: Container) throws -> Future<InfoResponse<User>> {
         return try container.client().post(self.basePath + "/userInvitations") {
             try $0.addToken()
             let content = RequestContent(data: user)
@@ -46,7 +46,7 @@ public final class UserInvitationApi: Api {
     /// Cancel a pending invitation for a user to join your team.
     /// - Parameter id: User Id
     /// - Parameter container: HTTP Container
-    public func deleteInvitedUser(id: String, on container: Container) throws -> Future<UserInfoResponse> {
+    public func deleteInvitedUser(id: String, on container: Container) throws -> Future<InfoResponse<User>> {
         return try container.client().post(self.basePath + "/userInvitations/\(id)") { try $0.addToken() }.flatMap({ (response) in
             return try response.handler()
         })

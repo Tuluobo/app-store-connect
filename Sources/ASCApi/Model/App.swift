@@ -37,17 +37,3 @@ public struct App: Model {
     let relationships: Relationship?
     let links: Link?
 }
-
-// MARK: - APP List Response
-
-public struct AppListResponse: Model {
-    public let data: [App]
-    public let links: Link
-    public let meta: PagingInformation
-}
-
-// MARK: - APP Info Response
-public struct AppInfoResponse: Model {
-    let data: App
-    let links: Link
-}

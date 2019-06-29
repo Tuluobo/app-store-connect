@@ -71,22 +71,3 @@ public struct Profile: Model {
     let type: ResourceType
     let links: Link
 }
-
-// MARK: - Profile List Response
-
-public struct ProfileListResponse: Model {
-    let data: [Profile]
-    let links: Link
-    let meta: PagingInformation
-    // Possible types: BundleId, Device, Certificate
-    // let included:
-}
-
-// MARK: - Profile Response
-
-public struct ProfileResponse: Model {
-    let data: Profile
-    let links: Link
-    // Possible types: BundleId, Device, Certificate
-    // let included:
-}

@@ -15,8 +15,10 @@ public final class UserApi: Api {
     /// Get User List
     /// /users
     /// - Parameter container: HTTP Container
-    public func getUserList(on container: Container) throws -> Future<UserListResponse> {
-        return try container.client().get(self.basePath + "/users", beforeSend: { try $0.addToken() }).flatMap({ (response) in
+    public func getUserList(on container: Container) throws -> Future<ListResponse<User>> {
+        return try container.client().get(self.basePath + "/users") {
+            try $0.addToken()
+        }.flatMap({ (response) in
             return try response.handler()
         })
     }
@@ -25,8 +27,10 @@ public final class UserApi: Api {
     /// /users/{id}
     /// - Parameter id: User id
     /// - Parameter container: HTTP Container
-    public func getUserInfo(id: String, on container: Container) throws -> Future<UserInfoResponse> {
-        return try container.client().get(self.basePath + "/users/\(id)", beforeSend: { try $0.addToken() }).flatMap { (response) in
+    public func getUserInfo(id: String, on container: Container) throws -> Future<InfoResponse<User>> {
+        return try container.client().get(self.basePath + "/users/\(id)") {
+            try $0.addToken()
+        }.flatMap { (response) in
             return try response.handler()
         }
     }
@@ -35,7 +39,7 @@ public final class UserApi: Api {
     /// /users/{id}
     /// - Parameter user: Update User
     /// - Parameter container: HTTP Container
-    public func updateUser(user: User, on container: Container) throws -> Future<UserInfoResponse> {
+    public func updateUser(user: User, on container: Container) throws -> Future<InfoResponse<User>> {
         return try container.client().patch(self.basePath + "/users/\(user.id)") { (request) in
             try request.addToken()
             let update = RequestContent(data: user)
