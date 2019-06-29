@@ -44,19 +44,19 @@ public struct Profile: Model {
     
     struct Relationship: Model {
         struct Certificates: Model {
-            let data: [ResourceModel]
+            let data: [ResourceModel]?
             let links: Link
             let meta: PagingInformation
         }
         
         struct Devices: Model {
-            let data: [ResourceModel]
+            let data: [ResourceModel]?
             let links: Link
             let meta: PagingInformation
         }
         
-        struct BundleId: Model {
-            let data: ResourceModel
+        struct BundleID: Model {
+            let data: ResourceModel?
             let links: Link
         }
         

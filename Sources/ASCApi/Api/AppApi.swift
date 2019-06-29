@@ -14,7 +14,7 @@ public final class AppApi: Api {
     public init() { }
     
     /// Get App List
-    /// /v1/apps
+    /// GET /v1/apps
     /// - Parameter container: HTTP Container
     public func getAppList(on container: Container) throws -> Future<AppListResponse> {
         return try container.client().get(self.basePath + "/apps", beforeSend: { try $0.addToken() }).flatMap({ (response) -> Future<AppListResponse> in
@@ -23,7 +23,7 @@ public final class AppApi: Api {
     }
     
     /// Get App Info
-    /// /v1/apps/{id}
+    /// GET /v1/apps/{id}
     /// - Parameter id: App id
     /// - Parameter container: HTTP Container
     public func getAppInfo(id: String, on container: Container) throws -> Future<AppInfoResponse> {

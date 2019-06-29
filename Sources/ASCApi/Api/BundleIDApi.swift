@@ -11,14 +11,21 @@ import Vapor
 public final class BundleIDApi: Api {
     public init() { }
     
+    /// Find and list bundle IDs that are registered to your team.
+    /// GET /bundleIds
+    /// - Parameter container: HTTP Container
     public func getBundleIDList(on container: Container) throws -> Future<BundleIDListResponse> {
         return try container.client().get(self.basePath + "/bundleIds") { try $0.addToken() }.flatMap { (response) in
             return try response.handler()
         }
     }
     
+    /// Register a new bundle ID for app development.
+    /// POST /bundleIds
+    /// - Parameter bundleID: Create BundleID Object
+    /// - Parameter container: HTTP Container
     public func create(bundleID: CreateBundleID, on container: Container) throws -> Future<BundleIDResponse> {
-        return try container.client().get(self.basePath + "/bundleIds") {
+        return try container.client().post(self.basePath + "/bundleIds") {
             try $0.addToken()
             let content = RequestContent(data: bundleID)
             try $0.content.encode(content)
@@ -27,8 +34,12 @@ public final class BundleIDApi: Api {
         }
     }
     
+    /// Update a specific bundle ID’s name.
+    /// PATCH /bundleIds/{id}
+    /// - Parameter bundleID: BundleID Object
+    /// - Parameter container: HTTP Container
     public func update(bundleID: BundleID, on container: Container) throws -> Future<BundleIDResponse> {
-        return try container.client().get(self.basePath + "/bundleIds/\(bundleID.id)") {
+        return try container.client().patch(self.basePath + "/bundleIds/\(bundleID.id)") {
             try $0.addToken()
             let content = RequestContent(data: bundleID)
             try $0.content.encode(content)
@@ -37,6 +48,10 @@ public final class BundleIDApi: Api {
         }
     }
     
+    /// Delete a bundle ID that is used for app development.
+    /// DELETE /bundleIds/{id}
+    /// - Parameter id: BundleID ID
+    /// - Parameter container: HTTP Container
     public func delete(id: String, on container: Container) throws -> Future<Void> {
         return try container.client().delete(self.basePath + "/bundleIds/\(id)") {
             try $0.addToken()
