@@ -6,7 +6,7 @@ An App-Store-Connect-Api implement based on Vapor that is A server-side Swift we
 
 ### Usage
 
-In `configure.swift`, Initialize using the code below In add above code: 
+In `configure.swift`, Initialize using the code below: 
 ```swift
 if let kid = Environment.get("kid"),
         let iss = Environment.get("iss"),
@@ -17,7 +17,7 @@ if let kid = Environment.get("kid"),
 Used In the `Controller` functions：
 ```swift
 let api = UserApi()
-let userResponse: Future<UserListResponse> = api.getUserList(on: req)
+let userResponse: Future<ListResponse<User>> = api.getUserList(on: req)
 ```
 ### LIENCE
 The Project is under the [MIT license](https://github.com/Tuluobo/app-store-connect/blob/master/LICENSE).
