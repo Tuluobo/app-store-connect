@@ -13,6 +13,26 @@ public enum ASError: Error {
     case response(ErrorResponse)
 }
 
+// MARK: - Error Response
+
+public struct ErrorResponse: Model {
+    let errors: [ErrorInfo]
+}
+
+public struct ErrorInfo: Model {
+    enum Source: String, Model {
+        case pointer = "pointer"
+        case parameter = "parameter"
+    }
+    
+    let code: String
+    let status: String
+    let title: String
+    let detail: String
+    let id: String?
+    let source: Source?
+}
+
 #if DEBUG
 
 extension ASError: Debuggable {
