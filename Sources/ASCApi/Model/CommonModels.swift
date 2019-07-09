@@ -17,7 +17,7 @@ enum EnableStatus: String, Model {
     case disabled = "DISABLED"
 }
 
-enum ResourceType: String, Model {
+public enum ResourceType: String, Model {
     case apps = "apps"
     case users = "users"
     case userInvitations = "userInvitations"
@@ -25,6 +25,8 @@ enum ResourceType: String, Model {
     case profiles = "profiles"
     case bundleIdCapabilities = "bundleIdCapabilities"
     case devices = "devices"
+    case betaTesters = "betaTesters"
+    case betaGroups = "betaGroups"
 }
 
 enum BundleIdPlatform: String, Model {
@@ -43,7 +45,7 @@ enum deviceType: String, Model {
 
 // MARK: - Common Model
 
-struct ResourceModel: Model {
+public struct ResourceModel: Model {
     let id: String
     let type: ResourceType
 }

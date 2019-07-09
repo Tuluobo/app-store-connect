@@ -13,12 +13,14 @@ public protocol Api {
     var scheme: String { get }
     var baseURL: String { get }
     var version: String { get }
+    
+    var resourceType: ResourceType { get }
 }
 
 public extension Api {
     
     var basePath: String {
-        return scheme + "://" + baseURL + "/" + version
+        return scheme + "://" + baseURL + "/" + version + "/" + resourceType.rawValue
     }
     
     var scheme: String {

@@ -9,6 +9,10 @@ import Foundation
 import Vapor
 
 public final class DeviceApi: Api {
+    public var resourceType: ResourceType {
+        return .devices
+    }
+    
     public init() { }
 
     /// Register a new device for app development.
@@ -16,7 +20,7 @@ public final class DeviceApi: Api {
     /// - Parameter device: Register Device
     /// - Parameter container: HTTP Container
     public func register(device: CreateDevice, on container: Container) throws -> Future<InfoResponse<Device>> {
-        return try container.client().post(self.basePath + "/devices") {
+        return try container.client().post(self.basePath) {
             try $0.addToken()
             try $0.content.encode(RequestContent(data: device))
         }.flatMap {
@@ -28,7 +32,7 @@ public final class DeviceApi: Api {
     /// GET /devices
     /// - Parameter container: HTTP Container
     public func getDeviceList(on container: Container) throws -> Future<ListResponse<Device>> {
-        return try container.client().get(self.basePath + "/devices") {
+        return try container.client().get(self.basePath) {
             try $0.addToken()
         }.flatMap {
             return try $0.handler()
@@ -40,7 +44,7 @@ public final class DeviceApi: Api {
     /// - Parameter id: Device Id
     /// - Parameter container: HTTP Container
     public func getDeviceInfo(id: String, on container: Container) throws -> Future<InfoResponse<Device>> {
-        return try container.client().get(self.basePath + "/devices/\(id)") {
+        return try container.client().get(self.basePath + "/\(id)") {
             try $0.addToken()
         }.flatMap {
             return try $0.handler()
@@ -52,7 +56,7 @@ public final class DeviceApi: Api {
     /// - Parameter device: Update Device
     /// - Parameter container: HTTP Container
     public func updateDevice(device: Device, on container: Container) throws -> Future<InfoResponse<Device>> {
-        return try container.client().patch(self.basePath + "/devices/\(device.id)") {
+        return try container.client().patch(self.basePath + "/\(device.id)") {
             try $0.addToken()
             try $0.content.encode(RequestContent(data: device))
         }.flatMap {

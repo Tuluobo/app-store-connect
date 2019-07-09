@@ -10,13 +10,17 @@ import Vapor
 
 public final class UserApi: Api {
     
+    public var resourceType: ResourceType {
+        return .users
+    }
+    
     public init() { }
     
     /// Get User List
     /// /users
     /// - Parameter container: HTTP Container
     public func getUserList(on container: Container) throws -> Future<ListResponse<User>> {
-        return try container.client().get(self.basePath + "/users") {
+        return try container.client().get(self.basePath) {
             try $0.addToken()
         }.flatMap({ (response) in
             return try response.handler()
@@ -28,7 +32,7 @@ public final class UserApi: Api {
     /// - Parameter id: User id
     /// - Parameter container: HTTP Container
     public func getUserInfo(id: String, on container: Container) throws -> Future<InfoResponse<User>> {
-        return try container.client().get(self.basePath + "/users/\(id)") {
+        return try container.client().get(self.basePath + "/\(id)") {
             try $0.addToken()
         }.flatMap { (response) in
             return try response.handler()
@@ -40,7 +44,7 @@ public final class UserApi: Api {
     /// - Parameter user: Update User
     /// - Parameter container: HTTP Container
     public func updateUser(user: User, on container: Container) throws -> Future<InfoResponse<User>> {
-        return try container.client().patch(self.basePath + "/users/\(user.id)") { (request) in
+        return try container.client().patch(self.basePath + "/\(user.id)") { (request) in
             try request.addToken()
             let update = RequestContent(data: user)
             try request.content.encode(update)
@@ -54,7 +58,7 @@ public final class UserApi: Api {
     /// - Parameter id: User id
     /// - Parameter container: HTTP Container
     public func deleteUser(id: String, on container: Container) throws -> Future<Void> {
-        return try container.client().delete(self.basePath + "/users/\(id)") { (request) in
+        return try container.client().delete(self.basePath + "/\(id)") { (request) in
             try request.addToken()
         }.flatMap { (response) in
             return try response.handlerEmpty()

@@ -11,13 +11,17 @@ import Vapor
 
 public final class AppApi: Api {
     
+    public var resourceType: ResourceType {
+        return .apps
+    }
+    
     public init() { }
     
     /// Get App List
     /// GET /v1/apps
     /// - Parameter container: HTTP Container
     public func getAppList(on container: Container) throws -> Future<ListResponse<App>> {
-        return try container.client().get(self.basePath + "/apps") {
+        return try container.client().get(self.basePath) {
             try $0.addToken()
         }.flatMap {
             return try $0.handler()
@@ -29,7 +33,7 @@ public final class AppApi: Api {
     /// - Parameter id: App id
     /// - Parameter container: HTTP Container
     public func getAppInfo(id: String, on container: Container) throws -> Future<InfoResponse<App>> {
-        return try container.client().get(self.basePath + "/apps/\(id)") {
+        return try container.client().get(self.basePath + "/\(id)") {
             try $0.addToken()
         }.flatMap {
             return try $0.handler()

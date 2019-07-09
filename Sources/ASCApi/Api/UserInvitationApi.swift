@@ -9,13 +9,18 @@ import Foundation
 import Vapor
 
 public final class UserInvitationApi: Api {
+    
+    public var resourceType: ResourceType {
+        return .userInvitations
+    }
+    
     public init() { }
     
     /// Get a list of pending invitations to join your team.
     /// /userInvitations
     /// - Parameter container: HTTP Container
     public func getInvitedList(on container: Container) throws -> Future<ListResponse<User>> {
-        return try container.client().get(self.basePath + "/userInvitations", beforeSend: { try $0.addToken() }).flatMap({ (response) in
+        return try container.client().get(self.basePath, beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
     }
@@ -25,7 +30,7 @@ public final class UserInvitationApi: Api {
     /// - Parameter id: User id
     /// - Parameter container: HTTP Container
     public func getInvitedUser(id: String, on container: Container) throws -> Future<InfoResponse<User>> {
-        return try container.client().get(self.basePath + "/userInvitations/\(id)", beforeSend: { try $0.addToken() }).flatMap({ (response) in
+        return try container.client().get(self.basePath + "/\(id)", beforeSend: { try $0.addToken() }).flatMap({ (response) in
             return try response.handler()
         })
     }
@@ -34,7 +39,7 @@ public final class UserInvitationApi: Api {
     /// - Parameter user: UserInvitation Object
     /// - Parameter container: HTTP Container
     public func inviteUser(user: UserInvitation, on container: Container) throws -> Future<InfoResponse<User>> {
-        return try container.client().post(self.basePath + "/userInvitations") {
+        return try container.client().post(self.basePath) {
             try $0.addToken()
             let content = RequestContent(data: user)
             try $0.content.encode(content)
@@ -47,7 +52,7 @@ public final class UserInvitationApi: Api {
     /// - Parameter id: User Id
     /// - Parameter container: HTTP Container
     public func deleteInvitedUser(id: String, on container: Container) throws -> Future<InfoResponse<User>> {
-        return try container.client().post(self.basePath + "/userInvitations/\(id)") { try $0.addToken() }.flatMap({ (response) in
+        return try container.client().post(self.basePath + "/\(id)") { try $0.addToken() }.flatMap({ (response) in
             return try response.handler()
         })
     }
